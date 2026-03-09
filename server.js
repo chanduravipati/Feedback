@@ -7,7 +7,12 @@ const cors = require("cors");
 const PORT = process.env.PORT || 7000;
 
 const app = express();
-app.use(cors());
+
+// Enable CORS for Netlify frontend
+app.use(cors({
+  origin: "https://clever-travesseiro-8f4af8.netlify.app"
+}));
+
 app.use(express.json());
 
 // MongoDB Client
@@ -25,7 +30,7 @@ let db;
 async function connectMongo() {
   try {
     await mongoClient.connect();
-    db = mongoClient.db("TechNovaX"); // database name
+    db = mongoClient.db("TechNovaX");
     console.log("✅ MongoDB Connected");
   } catch (err) {
     console.error("❌ MongoDB Connection Failed", err);
@@ -74,7 +79,7 @@ app.post("/feedback", async (req, res) => {
       from: "whatsapp:+14155238886",
       to: process.env.WHATSAPP_TO,
       body: `
-📩 *TechNovaX - New Feedback*
+📩 TechNovaX - New Feedback
 
 👤 Client: ${data.clientName}
 
@@ -104,10 +109,7 @@ ${data.suggestions || "No comments"}
   }
 });
 
-app.use(cors({
-  origin: "clever-travesseiro-8f4af8.netlify.app"
-}))
 // Start Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
