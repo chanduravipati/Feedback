@@ -104,6 +104,9 @@ ${data.suggestions || "No comments"}
   }
 });
 
+app.use(cors({
+  origin: "clever-travesseiro-8f4af8.netlify.app"
+}))
 // Start Server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
